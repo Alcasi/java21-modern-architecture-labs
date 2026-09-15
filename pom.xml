@@ -13,5 +13,6 @@
         <module>lab-virtual-threads</module>
         <module>lab-java21-records</module>
         <module>lab-springboot3-core</module>
+        <module>lab-kafka-core</module>
     </modules>
 </project>

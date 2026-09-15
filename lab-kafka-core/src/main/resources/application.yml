@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: lab-kafka-core
+  threads:
+    virtual:
+      enabled: true
+
+  kafka:
+    # Serialização no Produtor: Chave como String e Valor como JSON
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all # ◄◄ Garante que todas as réplicas confirmaram o recebimento
+      properties:
+        enable.idempotence: true # ◄◄ Exactly-Once na gravação da partição (evita duplicatas)
+        max.in.flight.requests.per.connection: 5
+
+    # Desserialização no Consumidor
+    consumer:
+      group-id: core-banking-group
+      auto-offset-reset: earliest # ◄◄ Se for um novo consumidor, lê desde o início do tópico
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.alvaro.kafka.*" # ◄◄ Pacotes permitidos para converter JSON em Record
