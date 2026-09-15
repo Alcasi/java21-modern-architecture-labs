@@ -26,3 +26,4 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "com.alvaro.kafka.*" # ◄◄ Pacotes permitidos para converter JSON em Record
+        partition.assignment.strategy: org.apache.kafka.clients.consumer.CooperativeStickyAssignor
