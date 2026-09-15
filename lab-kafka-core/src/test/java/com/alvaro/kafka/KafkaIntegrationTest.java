@@ -91,4 +91,27 @@ class KafkaIntegrationTest {
         assertThat(eventosContaPrincipal.getFirst().tipo()).isEqualTo("DEPOSITO");
         assertThat(eventosContaPrincipal.getLast().tipo()).isEqualTo("SAQUE");
     }
+
+        @Test
+        @DisplayName("Deve enviar mensagem com erro para DLT apos 3 tentativas sem travar a particao")
+        void deveEnviarParaDltQuandoOcorrerErro() {
+            // Criamos uma transação com valor negativo (Poison Pill proposital)
+            TransacaoEvento eventoInvalido = new TransacaoEvento(
+                    UUID.randomUUID().toString(),
+                    "CONTA-SUSPEITA-9999",
+                    new BigDecimal("-50.00"), // ◄◄ Valor negativo que dispara a exceção
+                    "SAQUE",
+                    Instant.now()
+            );
+
+            producer.enviar(eventoInvalido);
+
+            // Aguardamos as 3 tentativas e o envio para a DLT
+            await().atMost(Duration.ofSeconds(15)).untilAsserted(() -> {
+                assertThat(consumer.getEventosDlt()).hasSize(1);
+                assertThat(consumer.getEventosDlt().getFirst().transacaoId())
+                        .isEqualTo(eventoInvalido.transacaoId());
+            });
+        }
+
 }
