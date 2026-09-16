@@ -16,5 +16,6 @@
         <module>lab-kafka-core</module>
         <module>lab-transactional-outbox</module>
         <module>lab-saga-orchestrator</module>
+        <module>lab-idempotent-consumer</module>
     </modules>
 </project>
