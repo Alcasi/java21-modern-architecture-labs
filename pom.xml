@@ -14,5 +14,6 @@
         <module>lab-java21-records</module>
         <module>lab-springboot3-core</module>
         <module>lab-kafka-core</module>
+        <module>lab-transactional-outbox</module>
     </modules>
 </project>
