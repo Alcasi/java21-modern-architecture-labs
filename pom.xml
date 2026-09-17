@@ -17,5 +17,6 @@
         <module>lab-transactional-outbox</module>
         <module>lab-saga-orchestrator</module>
         <module>lab-idempotent-consumer</module>
+        <module>lab-aws-eventbridge</module>
     </modules>
 </project>
