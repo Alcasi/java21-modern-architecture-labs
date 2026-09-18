@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: lab-aws-dynamodb
+
+aws:
+  region: us-east-1
+  dynamodb:
+    table-name: banking_ledger

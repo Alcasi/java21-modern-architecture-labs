@@ -18,5 +18,7 @@
         <module>lab-saga-orchestrator</module>
         <module>lab-idempotent-consumer</module>
         <module>lab-aws-eventbridge</module>
+        <module>lab-aws-dynamodb</module>
+
     </modules>
 </project>

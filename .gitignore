@@ -6,3 +6,9 @@ target/
 *.iml
 .vscode/
 *.log
+bin/
+**/bin/
+.project
+.classpath
+.settings/
+**/.settings/
