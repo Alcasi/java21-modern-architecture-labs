@@ -19,6 +19,7 @@
         <module>lab-idempotent-consumer</module>
         <module>lab-aws-eventbridge</module>
         <module>lab-aws-dynamodb</module>
+        <module>lab-aws-lambda</module>
 
     </modules>
 </project>
