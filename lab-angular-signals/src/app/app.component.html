@@ -1,0 +1,90 @@
+<main class="dashboard-container">
+  <!-- Cabeçalho -->
+  <header class="header">
+    <div class="logo">
+      <span class="icon">🏛️</span>
+      <h1>NexaBank <span>Core Ledger</span></h1>
+    </div>
+    <span class="badge">Angular 18 • Signals Engine</span>
+  </header>
+
+  <!-- Cards de Saldo Reativos (Computed Signals) -->
+  <section class="cards-grid">
+    <div class="card saldo">
+      <span class="card-label">Saldo Disponível</span>
+      <h2 [class.negativo]="contaService.saldoDisponivel() < 0">
+        R$ {{ contaService.saldoDisponivel() | number:'1.2-2' }}
+      </h2>
+      <span class="card-sub">Atualizado via Computed Signal</span>
+    </div>
+
+    <div class="card creditos">
+      <span class="card-label">Total Entradas (Créditos)</span>
+      <h2 class="positivo">+ R$ {{ contaService.totalCreditos() | number:'1.2-2' }}</h2>
+      <span class="card-sub">Soma reativa automática</span>
+    </div>
+
+    <div class="card debitos">
+      <span class="card-label">Total Saídas (Débitos)</span>
+      <h2 class="negativo">- R$ {{ contaService.totalDebitos() | number:'1.2-2' }}</h2>
+      <span class="card-sub">Soma reativa automática</span>
+    </div>
+  </section>
+
+  <!-- Formulário de Nova Movimentação -->
+  <section class="form-section">
+    <h3>Nova Movimentação Bancária</h3>
+    <form (submit)="executarTransacao(); $event.preventDefault()" class="form-grid">
+      <input type="text" placeholder="Descrição da transação (ex: PIX Fornecedor)" [value]="descricaoInput()"
+        (input)="descricaoInput.set($any($event.target).value)" required />
+
+      <input type="number" step="0.01" placeholder="Valor (R$)" [value]="valorInput()"
+        (input)="valorInput.set(+$any($event.target).value)" required />
+
+      <select [value]="tipoInput()" (change)="tipoInput.set($any($event.target).value)">
+        <option value="CREDITO">Crédito (+)</option>
+        <option value="DEBITO">Débito (-)</option>
+      </select>
+
+      <button type="submit" class="btn-executar">Efetivar Transação</button>
+    </form>
+  </section>
+
+  <!-- Extrato com o Novo Control Flow @for do Angular 18 -->
+  <section class="table-section">
+    <h3>Extrato de Lançamentos em Tempo Real</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Horário</th>
+            <th>Descrição</th>
+            <th>Tipo</th>
+            <th class="text-right">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (trx of contaService.transacoes(); track trx.id) {
+          <tr>
+            <td>{{ trx.data | date:'HH:mm:ss' }}</td>
+            <td>{{ trx.descricao }}</td>
+            <td>
+              <span class="tag" [class.tag-credito]="trx.tipo === 'CREDITO'" [class.tag-debito]="trx.tipo === 'DEBITO'">
+                {{ trx.tipo }}
+              </span>
+            </td>
+            <td class="text-right valor-col" [class.positivo]="trx.tipo === 'CREDITO'"
+              [class.negativo]="trx.tipo === 'DEBITO'">
+              {{ trx.tipo === 'CREDITO' ? '+' : '-' }} R$ {{ trx.valor | number:'1.2-2' }}
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="4" class="empty-state">Nenhuma movimentação registrada nesta conta.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

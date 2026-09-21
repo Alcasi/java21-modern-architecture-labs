@@ -17,3 +17,11 @@ bin/
 **/.terraform/
 *.tfstate
 *.tfstate.*
+
+# Node / Angular
+node_modules/
+**/node_modules/
+.angular/
+**/.angular/
+dist/
+**/dist/
