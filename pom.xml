@@ -20,6 +20,6 @@
         <module>lab-aws-eventbridge</module>
         <module>lab-aws-dynamodb</module>
         <module>lab-aws-lambda</module>
-
+        <module>lab-resilience-core</module>
     </modules>
 </project>

@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: lab-resilience-core
+  threads:
+    virtual:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      bacenPixService:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 5            # Analisa as últimas 5 chamadas
+        minimum-number-of-calls: 5        # Precisa de no mínimo 5 chamadas para calcular
+        failure-rate-threshold: 50        # Se 50% falharem, o circuito ABRE (OPEN)
+        wait-duration-in-open-state: 2s   # Fica 2 segundos aberto rejeitando chamadas
+        permitted-number-of-calls-in-half-open-state: 2 # Testa 2 chamadas no HALF_OPEN
+        automatic-transition-from-open-to-half-open-enabled: true
+
+  retry:
+    instances:
+      bacenPixService:
+        max-attempts: 3                   # Tenta até 3 vezes
+        wait-duration: 100ms              # Espera 100ms entre as tentativas
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,circuitbreakers,metrics
