@@ -12,3 +12,8 @@ bin/
 .classpath
 .settings/
 **/.settings/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
